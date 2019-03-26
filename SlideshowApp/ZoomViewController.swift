@@ -15,7 +15,9 @@ class ZoomViewController: UIViewController {
         let viewController = self.presentingViewController as! ViewController
 
         self.dismiss(animated: true) {
-            viewController.scheduledTimer()
+            if viewController.play.titleLabel?.text == "停止" {
+                viewController.scheduledTimer()
+            }
         }
  
     }
