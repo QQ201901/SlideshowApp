@@ -11,7 +11,13 @@ import UIKit
 class ZoomViewController: UIViewController {
     
     @IBAction func closeButtonAction(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
+        
+        let viewController = self.presentingViewController as! ViewController
+
+        self.dismiss(animated: true) {
+            viewController.scheduledTimer()
+        }
+ 
     }
     
     @IBOutlet weak var imagez: UIImageView!

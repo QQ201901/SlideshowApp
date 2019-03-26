@@ -54,13 +54,29 @@ class ViewController: UIViewController {
         // Image Viewに読み込んだ画像をセット
         image1.image = imageView
         
+        print(dispImageNo)
+        
     }
+    
+    func scheduledTimer(){
+        self.timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(updateTimer(_:)), userInfo: nil, repeats: true)
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
     }
 
+//    var isBackFromSecondViewController = [true, false]
+    
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewDidDisappear(animated)
+//
+//               if self.timer == nil {
+//                    scheduledTimer()
+//            }
+ //   }
 
     @objc func updateTimer(_ timer: Timer) {
         // 表示している画像の番号を1増やす
@@ -69,6 +85,7 @@ class ViewController: UIViewController {
         displayImage()
    }
     
+
     @IBAction func Next(_ sender: Any) {
         //カウンターに1足して次の画像を表示させる
         dispImageNo = dispImageNo + 1
@@ -90,12 +107,13 @@ class ViewController: UIViewController {
             sender.setTitle("停止", for: .normal)
         }
         else if sender.titleLabel?.text == "停止"{
-            sender.setTitle("再生", for: .normal)
+          sender.setTitle("再生", for: .normal)
         }
     }
+    
         
     @IBAction func Autoplay(_ sender: Any) {
-        if self.timer == nil, play.titleLabel?.text == "再生" {
+        if self.timer == nil, play.titleLabel?.text == "再生" {            
             self.timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(updateTimer(_:)), userInfo: nil, repeats: true)
             
             Next.isEnabled = false
@@ -105,23 +123,26 @@ class ViewController: UIViewController {
         else if self.timer != nil, play.titleLabel?.text == "停止"  {
             self.timer?.invalidate()   // タイマーを停止する
             self.timer = nil          // startTimer() の timer == nil で判断するために、 timer = nil としておく
+
             Next.isEnabled = true
             Back.isEnabled = true
             }
         
     }
 
-    @IBAction func TapAction(_ sender: Any) {
-        
-    }
-    
+
+    @IBAction func TapAction(_ sender: UITapGestureRecognizer) {
+            }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // segueから遷移先のResultViewControllerを取得する
         let zoomViewController:ZoomViewController = segue.destination as! ZoomViewController
 
         zoomViewController.originalImage = self.image1.image
-    
+        
+        //遷移時にタイマーを停止する
+        self.timer?.invalidate()   // タイマーを停止する
+        self.timer = nil
         }
-    
+
 }
